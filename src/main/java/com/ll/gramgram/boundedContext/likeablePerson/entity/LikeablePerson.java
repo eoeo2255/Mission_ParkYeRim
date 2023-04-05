@@ -44,7 +44,4 @@ public class LikeablePerson {
         };
     }
 
-    public Member getFromInstaMemberId() {
-        return this.getFromInstaMemberId();
-    }
 }
