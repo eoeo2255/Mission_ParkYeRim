@@ -156,7 +156,7 @@ public class LikeablePersonControllerTests {
     void t006() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(get("/likeablePerson/delete/{id}")
+                .perform(get("/likeablePerson/delete/")
                         .with(csrf()) // CSRF 키 생성
                         .param("username", "user3")
                         .param("id", "3")

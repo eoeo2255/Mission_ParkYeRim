@@ -3,7 +3,6 @@ package com.ll.gramgram.boundedContext.likeablePerson.controller;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
-import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import com.ll.gramgram.boundedContext.member.entity.Member;
@@ -70,14 +69,14 @@ public class LikeablePersonController {
     @GetMapping("/delete/{id}")
     public String deleteLikeablePerson(Principal principal, @PathVariable("id") long id) {
         LikeablePerson likeablePerson = this.likeablePersonService.getLP(id);
-        Member member = rq.getMember();
 
         //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
-        if (!member.getUsername().equals(principal.getName())) {
+        if (!likeablePerson.getFromInstaMember().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.likeablePersonService.delete(likeablePerson);
-        return "/likeablePerson/list";
+
+        return "redirect:/likeablePerson/list";
     }
 
 }

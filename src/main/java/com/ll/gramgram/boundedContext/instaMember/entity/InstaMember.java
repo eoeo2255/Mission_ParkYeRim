@@ -1,6 +1,5 @@
 package com.ll.gramgram.boundedContext.instaMember.entity;
 
-import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

@@ -8,7 +8,6 @@ import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
-        if ( member.hasConnectedInstaMember() == false ) {
+        if (member.hasConnectedInstaMember() == false) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
 
@@ -56,13 +55,13 @@ public class LikeablePersonService {
 
     public LikeablePerson getLP(long id) {
         Optional<LikeablePerson> olp = this.likeablePersonRepository.findById((int) id);
-        if(olp.isPresent()) {
+        if (olp.isPresent()) {
             return olp.get();
         } else {
             throw new DataNotFoundException("likeablPerson Not Found");
         }
     }
-
+    @Transactional
     public void delete(LikeablePerson likeablePerson) {
         this.likeablePersonRepository.delete(likeablePerson);
     }
