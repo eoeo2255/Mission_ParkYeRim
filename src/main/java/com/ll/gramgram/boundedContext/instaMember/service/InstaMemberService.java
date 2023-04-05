@@ -83,4 +83,5 @@ public class InstaMemberService {
         // 생성
         return create(username, gender);
     }
+
 }

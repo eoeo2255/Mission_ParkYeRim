@@ -149,4 +149,27 @@ public class LikeablePersonControllerTests {
                         """.stripIndent().trim())));
         ;
     }
+
+    @Test
+    @DisplayName("호감 삭제")
+    @WithUserDetails("user3")
+    void t006() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(get("/likeablePerson/delete/{id}")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "user3")
+                        .param("id", "3")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("deleteLikeablePerson"))
+                .andExpect(status().is3xxRedirection());
+        ;
+    }
+
+
 }
