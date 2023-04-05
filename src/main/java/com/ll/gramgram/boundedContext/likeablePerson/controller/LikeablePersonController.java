@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -69,9 +70,10 @@ public class LikeablePersonController {
     @GetMapping("/delete/{id}")
     public String deleteLikeablePerson(Principal principal, @PathVariable("id") long id) {
         LikeablePerson likeablePerson = this.likeablePersonService.getLP(id);
+        Member member = rq.getMember();
 
         //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
-        if (!likeablePerson.getFromInstaMember().getUsername().equals(principal.getName())) {
+        if (!Objects.equals(member.getInstaMember().getId(), likeablePerson.getFromInstaMember().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.likeablePersonService.delete(likeablePerson);
