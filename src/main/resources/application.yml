@@ -14,11 +14,11 @@ spring:
           google:
             client-id:
             client-secret:
-            scope: profile,email
-            client-name: Google
+            scope:
+              - email
+              - profile
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
-            client-authentication-method: POST
+            redirect-uri: http://localhost:8080/member/login/oauth2/code/google
           kakao:
             clientId:
             scope:
@@ -27,6 +27,11 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: POST
         provider:
+          google:
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token_uri: https://oauth2.googleapis.com/token
+            user-name-attribute: sub
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
