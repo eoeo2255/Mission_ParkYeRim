@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .logout(
                         logout -> logout
                                 .logoutUrl("/member/logout")
+                                .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)
                 );
 
         return http.build();

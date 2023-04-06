@@ -53,8 +53,8 @@ public class LikeablePersonService {
     }
 
 
-    public LikeablePerson getLP(long id) {
-        Optional<LikeablePerson> olp = this.likeablePersonRepository.findById((int) id);
+    public LikeablePerson getLP(int id) {
+        Optional<LikeablePerson> olp = this.likeablePersonRepository.findById(id);
         if (olp.isPresent()) {
             return olp.get();
         } else {

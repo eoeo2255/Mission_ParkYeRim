@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.controller;
 
+import com.ll.gramgram.base.DataNotFoundException;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
@@ -69,11 +70,11 @@ public class LikeablePersonController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteLikeablePerson(Principal principal, @PathVariable("id") long id) {
+    public String deleteLikeablePerson(Principal principal, @PathVariable("id") int id) {
         LikeablePerson likeablePerson = this.likeablePersonService.getLP(id);
         String  username = likeablePerson.getFromInstaMemberUsername();
         String loginUser = rq.getMember().getInstaMember().getUsername();
-
+        principal.getName();
         //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
         if (!(username.equals(loginUser))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
