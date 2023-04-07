@@ -17,7 +17,7 @@
 
     <th:block th:if="${@rq.member.hasConnectedInstaMember}">
         <ul>
-            <li th:each="likeablePerson: ${likeablePeople}" >
+            <li th:each="likeablePerson: ${likeablePeople}">
                 <span class="toInstaMember_username" th:text="${likeablePerson.toInstaMember.username}"></span>
                 <span class="toInstaMember_attractiveTypeDisplayName"
                       th:text="${likeablePerson.attractiveTypeDisplayName}"></span>

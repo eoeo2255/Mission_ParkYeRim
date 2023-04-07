@@ -53,14 +53,15 @@ public class LikeablePersonService {
     }
 
 
-    public LikeablePerson getLP(int id) {
-        Optional<LikeablePerson> olp = this.likeablePersonRepository.findById(id);
-        if (olp.isPresent()) {
-            return olp.get();
+    public LikeablePerson getLikeablePerson(int id) {
+        Optional<LikeablePerson> oLikeablePerson = this.likeablePersonRepository.findById(id);
+        if (oLikeablePerson.isPresent()) {
+            return oLikeablePerson.get();
         } else {
             throw new DataNotFoundException("likeablPerson Not Found");
         }
     }
+
     @Transactional
     public void delete(LikeablePerson likeablePerson) {
         this.likeablePersonRepository.delete(likeablePerson);

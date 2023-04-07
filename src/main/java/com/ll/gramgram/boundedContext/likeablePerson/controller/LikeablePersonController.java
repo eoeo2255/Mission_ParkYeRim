@@ -1,13 +1,10 @@
 package com.ll.gramgram.boundedContext.likeablePerson.controller;
 
-import com.ll.gramgram.base.DataNotFoundException;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
-import com.ll.gramgram.boundedContext.member.entity.Member;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -70,9 +65,9 @@ public class LikeablePersonController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteLikeablePerson(Principal principal, @PathVariable("id") int id) {
-        LikeablePerson likeablePerson = this.likeablePersonService.getLP(id);
-        String  username = likeablePerson.getFromInstaMemberUsername();
+    public String deleteLikeablePerson(@PathVariable("id") int id) {
+        LikeablePerson likeablePerson = this.likeablePersonService.getLikeablePerson(id);
+        String username = likeablePerson.getFromInstaMemberUsername();
         String loginUser = rq.getMember().getInstaMember().getUsername();
 
         //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
