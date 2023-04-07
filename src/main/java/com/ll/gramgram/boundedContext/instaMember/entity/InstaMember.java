@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.instaMember.entity;
 
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,4 +30,7 @@ public class InstaMember {
     private String username;
     @Setter
     private String gender;
+    @OneToOne
+    private Member member;  //인스타 멤버에서도 멤버에 접근할 수 있음
+
 }

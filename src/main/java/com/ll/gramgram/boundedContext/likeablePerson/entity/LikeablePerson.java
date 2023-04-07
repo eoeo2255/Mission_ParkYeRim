@@ -42,4 +42,5 @@ public class LikeablePerson {
             default -> "능력";
         };
     }
+
 }
