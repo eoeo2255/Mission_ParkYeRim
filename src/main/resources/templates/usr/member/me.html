@@ -11,6 +11,7 @@
     <div>이름 : <span th:text="${@rq.member.username}"></span></div>
     <div>가입날짜 : <span th:text="${#temporals.format(@rq.member.createDate, 'yyyy-MM-dd HH:mm')}"></span></div>
     <div>수정날짜 : <span th:text="${#temporals.format(@rq.member.modifyDate, 'yyyy-MM-dd HH:mm')}"></span></div>
+    <div>나에게 호감을 표시한 사람 수 : <span th:if="${@rq.login and @rq.member.hasConnectedInstaMember()}" th:text="|${#lists.size(@rq.member.instaMember.whoLikesMe)}|"></span></div>
 </main>
 
 

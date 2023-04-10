@@ -9,14 +9,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,27 +52,29 @@ public class LikeablePersonController {
 
         // 인스타인증을 했는지 체크
         if (instaMember != null) {
-            List<LikeablePerson> likeablePeople = likeablePersonService.findByFromInstaMemberId(instaMember.getId());
+            List<LikeablePerson> likeablePeople = instaMember.getMyLikeableList();
             model.addAttribute("likeablePeople", likeablePeople);
         }
 
         return "usr/likeablePerson/list";
     }
 
-
-    @GetMapping("/delete/{id}")
-    public String deleteLikeablePerson(@PathVariable("id") int id) {
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
         LikeablePerson likeablePerson = this.likeablePersonService.getLikeablePerson(id);
-        String username = likeablePerson.getFromInstaMemberUsername();
-        String loginUser = rq.getMember().getInstaMember().getUsername();
 
-        //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
-        if (!(username.equals(loginUser))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        RsData canUDeleteThis = likeablePersonService.canUDelete(rq.getMember(), likeablePerson);
+        if (canUDeleteThis.isFail()) {
+            return rq.historyBack(canUDeleteThis);
         }
-        this.likeablePersonService.delete(likeablePerson);
 
-        return rq.redirectWithMsg("/likeablePerson/list", "삭제되었습니다.");
+        RsData deleteThis = likeablePersonService.delete(likeablePerson);
+        if (deleteThis.isFail()) {
+            return rq.historyBack(deleteThis);
+        }
+
+        return rq.redirectWithMsg("/likeablePerson/list", deleteThis);
     }
 
 }
