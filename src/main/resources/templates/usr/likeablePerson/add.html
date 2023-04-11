@@ -57,7 +57,7 @@
         <form th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
               onsubmit="AddForm__submit(this); return false;">
             <div>
-                당신의 인스타ID : <span class="badge" th:text="${@rq.member.instaMember.username}"></span>
+                당신의 인스타ID : <span class="badge" th:text="${@rq.member.instaMember.getInstaId}"></span>
             </div>
             <div>
                 <input type="text" name="username" autocomplete="off" maxlength="30" placeholder="상대방의 인스타그램 아이디"

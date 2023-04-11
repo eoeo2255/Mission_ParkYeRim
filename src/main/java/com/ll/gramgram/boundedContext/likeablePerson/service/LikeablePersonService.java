@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,15 @@ public class LikeablePersonService {
             return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
         }
 
+        if (Objects.equals(member.getInstaMember().getUsername(), username)) {
+            if (member.getInstaMember().getMyLikeableList().contains(username) && member.getInstaMember().getMyLikeableList().contains(attractiveTypeCode)) {
+                return RsData.of("F-1", "이미 등록된 호감표시입니다.");
+            }
+            LikeablePerson modifyLikeable = (LikeablePerson) findByFromInstaMemberId(member.getInstaMember().getId());
+            modifyLikeable.setAttractiveTypeCode(attractiveTypeCode);
+            return RsData.of("S-2", "호감 사유를 변경했습니다.");
+        }
+
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
@@ -57,10 +67,9 @@ public class LikeablePersonService {
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
-    public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
-        return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
+    public List<LikeablePerson> findByFromInstaMemberId(Long id) {
+        return likeablePersonRepository.findByFromInstaMemberId(id);
     }
-
 
     public LikeablePerson getLikeablePerson(int id) {
         Optional<LikeablePerson> oLikeablePerson = this.likeablePersonRepository.findById(id);
