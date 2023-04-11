@@ -86,13 +86,13 @@ public class LikeablePersonControllerTests {
 
     @Test
     @DisplayName("등록 폼 처리(user2가 user3에게 호감표시(외모))")
-    @WithUserDetails("user2")
+    @WithUserDetails("user3")
     void t003() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(post("/likeablePerson/add")
                         .with(csrf()) // CSRF 키 생성
-                        .param("username", "insta_user3")
+                        .param("username", "insta_user8")
                         .param("attractiveTypeCode", "1")
                 )
                 .andDo(print());

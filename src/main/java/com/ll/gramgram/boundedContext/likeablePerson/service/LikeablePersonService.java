@@ -33,7 +33,7 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
-        if (member.getInstaMember().getMyLikeableList().size() > 10) {
+        if (member.getInstaMember().getMyLikeableList().size()>= 10) {
             return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
         }
 
