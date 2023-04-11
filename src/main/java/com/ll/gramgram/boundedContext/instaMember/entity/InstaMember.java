@@ -37,7 +37,6 @@ public class InstaMember {
 
     @OneToMany(mappedBy = "fromInstaMember", cascade = {CascadeType.ALL})
     @OrderBy("id desc") // 정렬
-    @LazyCollection(LazyCollectionOption.EXTRA)
     @Builder.Default
     private List<LikeablePerson> myLikeableList = new ArrayList<>();
 

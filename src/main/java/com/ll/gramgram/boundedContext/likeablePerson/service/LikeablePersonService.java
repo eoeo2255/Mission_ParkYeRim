@@ -24,12 +24,17 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
+
         if (member.hasConnectedInstaMember() == false) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
 
         if (member.getInstaMember().getUsername().equals(username)) {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
+        }
+
+        if (member.getInstaMember().getMyLikeableList().size() > 10) {
+            return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
         }
 
         InstaMember fromInstaMember = member.getInstaMember();
