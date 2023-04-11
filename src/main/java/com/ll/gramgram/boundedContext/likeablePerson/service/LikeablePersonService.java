@@ -44,8 +44,7 @@ public class LikeablePersonService {
                 if (Objects.equals(likeable.getAttractiveTypeCode(), attractiveTypeCode)) {
                     return RsData.of("F-1", "이미 등록된 호감표시입니다.");
                 }
-                LikeablePerson modifyLikeable = (LikeablePerson) findByFromInstaMemberId(member.getInstaMember().getId());
-                modifyLikeable.setAttractiveTypeCode(attractiveTypeCode);
+                likeable.setAttractiveTypeCode(attractiveTypeCode);
                 return RsData.of("S-2", "호감 사유를 변경했습니다.");
             }
         }
