@@ -39,7 +39,7 @@ public class LikeablePersonService {
         }
 
         if (Objects.equals(member.getInstaMember().getUsername(), username)) {
-            if (member.getInstaMember().getMyLikeableList().contains(username) && member.getInstaMember().getMyLikeableList().contains(attractiveTypeCode)) {
+            if (member.getInstaMember().getMyLikeableList().contains(attractiveTypeCode)) {
                 return RsData.of("F-1", "이미 등록된 호감표시입니다.");
             }
             LikeablePerson modifyLikeable = (LikeablePerson) findByFromInstaMemberId(member.getInstaMember().getId());
