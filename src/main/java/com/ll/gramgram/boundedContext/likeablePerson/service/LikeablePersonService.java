@@ -38,15 +38,17 @@ public class LikeablePersonService {
             return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
         }
 
-        if (Objects.equals(member.getInstaMember().getUsername(), username)) {
-            if (member.getInstaMember().getMyLikeableList().contains(attractiveTypeCode)) {
-                return RsData.of("F-1", "이미 등록된 호감표시입니다.");
+        List<LikeablePerson> membersLikeable = member.getInstaMember().getMyLikeableList();
+        for (LikeablePerson likeable : membersLikeable) {
+            if (Objects.equals(likeable.getToInstaMemberUsername(), username)) {
+                if (Objects.equals(likeable.getAttractiveTypeCode(), attractiveTypeCode)) {
+                    return RsData.of("F-1", "이미 등록된 호감표시입니다.");
+                }
+                LikeablePerson modifyLikeable = (LikeablePerson) findByFromInstaMemberId(member.getInstaMember().getId());
+                modifyLikeable.setAttractiveTypeCode(attractiveTypeCode);
+                return RsData.of("S-2", "호감 사유를 변경했습니다.");
             }
-            LikeablePerson modifyLikeable = (LikeablePerson) findByFromInstaMemberId(member.getInstaMember().getId());
-            modifyLikeable.setAttractiveTypeCode(attractiveTypeCode);
-            return RsData.of("S-2", "호감 사유를 변경했습니다.");
         }
-
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
