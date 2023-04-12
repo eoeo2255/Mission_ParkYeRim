@@ -33,8 +33,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String oauthId = oAuth2User.getName();
 
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+
         if (providerTypeCode.equals("NAVER")) {
-            oauthId = oAuth2User.getAttributes().get("response").get("id").toString();
+            Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+            oauthId = (String) response.get("id");
         }
 
         String username = providerTypeCode + "__%s".formatted(oauthId);
