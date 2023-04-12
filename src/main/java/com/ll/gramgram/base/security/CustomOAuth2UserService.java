@@ -23,6 +23,7 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final MemberService memberService;
 
+
     // 카카오톡 로그인이 성공할 때 마다 이 함수가 실행된다.
     @Override
     @Transactional
@@ -32,6 +33,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String oauthId = oAuth2User.getName();
 
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+        if (providerTypeCode.equals("NAVER")) {
+            oauthId = oAuth2User.getAttributes().get("response").get("id").toString();
+        }
 
         String username = providerTypeCode + "__%s".formatted(oauthId);
 
