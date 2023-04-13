@@ -27,18 +27,15 @@ public class LikeablePersonService {
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
 
         if (member.hasConnectedInstaMember() == false) {
-            return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
+            return RsData.of("F-2", "먼저 인스타그램 아이디를 등록해주세요.");
         }
 
         if (member.getInstaMember().getUsername().equals(username)) {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
-        if (member.getInstaMember().getMyLikeableList().size()>= 10) {
-            return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
-        }
-
         List<LikeablePerson> membersLikeable = member.getInstaMember().getMyLikeableList();
+
         for (LikeablePerson likeable : membersLikeable) {
             if (Objects.equals(likeable.getToInstaMemberUsername(), username)) {
                 if (Objects.equals(likeable.getAttractiveTypeCode(), attractiveTypeCode)) {
@@ -50,6 +47,10 @@ public class LikeablePersonService {
         }
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
+
+        if (member.getInstaMember().getMyLikeableList().size()>= 10) {
+            return RsData.of("F-1", "호감 표시할 수 있는 최대 횟수를 넘었습니다.");
+        }
 
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
