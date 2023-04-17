@@ -46,15 +46,18 @@
     </script>
     <div class="flex-grow flex items-center justify-center">
         <div class="max-w-2xl w-full px-4">
-            <form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
-                <div>
-                    <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
+            <form th:action method="POST" class="flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
+                <div class="form-control">
+                    <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered" autofocus >
                 </div>
-                <div>
+                <div class="form-control">
                     <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
                 </div>
                 <div>
-                    <input type="submit" value="회원가입" class="btn btn-primary">
+                    <button class="btn btn-block btn-primary gap-1 my-2" type="submit" value="회원가입">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>회원가입</span>
+                    </button>
                 </div>
             </form>
         </div>

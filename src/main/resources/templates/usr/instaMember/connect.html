@@ -43,33 +43,31 @@
                 인스타아이디 인증
             </h1>
 
-            <form th:action method="POST" class="flex flex-col gap-6"
+            <form th:action method="POST" class="flex flex-col gap-6 my-20"
                   onsubmit="ConnectForm__submit(this); return false;">
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text">인스타아이디</span>
+                        <span class="label-text"><i class="fa-solid fa-check"></i> 인스타아이디</span>
                     </label>
                     <input type="text" name="username" autocomplete="off" maxlength="30" placeholder="인스타그램 아이디" class="input input-bordered" autofocus onchange="$(this).keyup();" onkeyup="$(this).next().children(':last-child').text(this.value.trim());" onpaste="setTimeoutZero(()=>$(this).keyup());" />
-                    <a href="https://instagram.com/" onclick="$(this).attr('href', $(this).text().replaceAll(' ', ''));" target="_blank" style="display:flex;" >
-                        <span class="my-2">https://instagram.com/</span><span></span>
+                    <a href="https://instagram.com/" onclick="$(this).attr('href', $(this).text().replaceAll(' ', ''));" target="_blank" style="display:flex; " class="block mt-3 text-sm break-all underline text-blue-500" >
+                        <span class="my-2" >https://instagram.com/</span><span class="text-red-300 my-2"></span>
                     </a>
                 </div>
 
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text">성별</span>
+                        <span class="label-text mt-5"><i class="fa-solid fa-check"></i> 성별</span>
                     </label>
 
-                    <div class="flex justify-center gap-5">
+                    <div class="flex gap-5 my-2">
                         <label class="flex gap-1 items-center cursor-pointer">
-                            <input type="radio" name="gender" class="radio radio-primary" value="W">
-                            <i class="fa-solid fa-venus"></i>
-                            <span>여성</span>
+                            <input type="radio" name="gender" class="radio radio-primary peer" value="W">
+                            <span class="text-blue-400 peer-checked:text-blue-900 peer-checked:font-bold"><i class="fa-solid fa-venus"></i>여성</span>
                         </label>
                         <label class="flex gap-1 items-center cursor-pointer">
-                            <input type="radio" name="gender" value="M" class="radio radio-primary">
-                            <i class="fa-solid fa-mars"></i>
-                            <span>남성</span>
+                            <input type="radio" name="gender" value="M" class="radio radio-primary peer">
+                            <span class="text-blue-400 peer-checked:text-blue-900 peer-checked:font-bold"><i class="fa-solid fa-mars"></i>남성</span>
                         </label>
                     </div>
                 </div>
