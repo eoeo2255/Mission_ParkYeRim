@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -24,7 +23,7 @@ public class LikeablePersonController {
     private final Rq rq;
     private final LikeablePersonService likeablePersonService;
 
-    @GetMapping("/add")
+    @GetMapping("/like")
     public String showAdd() {
         return "usr/likeablePerson/add";
     }
@@ -36,7 +35,7 @@ public class LikeablePersonController {
         private final int attractiveTypeCode;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/like")
     public String add(@Valid AddForm addForm) {
         RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
         InstaMember instaMember = rq.getMember().getInstaMember();
@@ -71,7 +70,7 @@ public class LikeablePersonController {
             return rq.historyBack(canUDeleteThis);
         }
 
-        RsData deleteThis = likeablePersonService.delete(likeablePerson);
+        RsData deleteThis = likeablePersonService.cancel(likeablePerson);
         if (deleteThis.isFail()) {
             return rq.historyBack(deleteThis);
         }

@@ -46,7 +46,7 @@
                     <li><a href="/member/join" th:if="${@rq.logout}" class="btn btn-link"><i class="fa-solid fa-user-plus"></i> 회원가입</a></li>
                     <li><a href="/member/me" th:if="${@rq.login}" class="btn btn-link"><i class="fa-solid fa-user"></i>내 정보</a></li>
                     <li><a href="/instaMember/connect" th:if="${@rq.login}" class="btn btn-link"><i class="fa-brands fa-instagram"></i>인스타그램 ID 등록</a></li>
-                    <li><a href="/likeablePerson/add" th:if="${@rq.login}" class="btn btn-link"><i class="fa-solid fa-heart-circle-plus"></i>호감표시</a></li>
+                    <li><a href="/likeablePerson/like" th:if="${@rq.login}" class="btn btn-link"><i class="fa-solid fa-heart-circle-plus"></i>호감표시</a></li>
                     <li><a href="/likeablePerson/list" th:if="${@rq.login}" class="btn btn-link"><i class="fa-solid fa-list-ol"></i>호감목록</a></li>
                     <li><a href="javascript:;" th:if="${@rq.login}" onclick="$(this).next().submit();" class="btn btn-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>로그아웃</a>
                     <form th:if="${@rq.login}" hidden th:action="|/member/logout|" method="POST"></form></li>

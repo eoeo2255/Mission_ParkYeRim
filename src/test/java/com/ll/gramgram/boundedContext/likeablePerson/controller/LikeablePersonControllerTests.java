@@ -1,8 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.controller;
 
 
-import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
-import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +34,7 @@ public class LikeablePersonControllerTests {
     void t001() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(get("/likeablePerson/add"))
+                .perform(get("/likeablePerson/like"))
                 .andDo(print());
 
         // THEN
@@ -58,7 +54,7 @@ public class LikeablePersonControllerTests {
     void t002() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(get("/likeablePerson/add"))
+                .perform(get("/likeablePerson/like"))
                 .andDo(print());
 
         // THEN
@@ -90,7 +86,7 @@ public class LikeablePersonControllerTests {
     void t003() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(post("/likeablePerson/add")
+                .perform(post("/likeablePerson/like")
                         .with(csrf()) // CSRF 키 생성
                         .param("username", "insta_user8")
                         .param("attractiveTypeCode", "1")
@@ -111,7 +107,7 @@ public class LikeablePersonControllerTests {
     void t004() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(post("/likeablePerson/add")
+                .perform(post("/likeablePerson/like")
                         .with(csrf()) // CSRF 키 생성
                         .param("username", "abcd")
                         .param("attractiveTypeCode", "2")

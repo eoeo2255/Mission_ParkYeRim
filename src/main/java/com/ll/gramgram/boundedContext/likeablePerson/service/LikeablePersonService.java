@@ -83,7 +83,7 @@ public class LikeablePersonService {
     }
 
     @Transactional
-    public RsData delete(LikeablePerson likeablePerson) {
+    public RsData cancel(LikeablePerson likeablePerson) {
         this.likeablePersonRepository.delete(likeablePerson);
         return RsData.of("S-1", "%s님에 대한 호감을 취소했습니다.".formatted(likeablePerson.getToInstaMemberUsername()));
     }
