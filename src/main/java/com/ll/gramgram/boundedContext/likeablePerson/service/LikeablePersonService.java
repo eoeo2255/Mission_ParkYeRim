@@ -96,7 +96,8 @@ public class LikeablePersonService {
 
         //항목에 대한 소유권이 본인(로그인한 사람)에게 있는지 체크
         if (!(member.getInstaMember().getId()).equals(likeablePerson.getFromInstaMember().getId())) {
-            return RsData.of("F-1", "권한이 없습니다.");
+            return RsData.of("F" +
+                    "-1", "권한이 없습니다.");
         }
 
         return RsData.of("S-1", "삭제할 수 있습니다.");
