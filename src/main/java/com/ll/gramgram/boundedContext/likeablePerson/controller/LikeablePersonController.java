@@ -24,20 +24,13 @@ public class LikeablePersonController {
     private final LikeablePersonService likeablePersonService;
 
     @GetMapping("/like")
-    public String showAdd() {
-        return "usr/likeablePerson/add";
-    }
-
-    @AllArgsConstructor
-    @Getter
-    public static class AddForm {
-        private final String username;
-        private final int attractiveTypeCode;
+    public String showLike() {
+        return "usr/likeablePerson/like";
     }
 
     @PostMapping("/like")
-    public String add(@Valid AddForm addForm) {
-        RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
+    public String like(@Valid LikeForm likeForm) {
+        RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), likeForm.getUsername(), likeForm.getAttractiveTypeCode());
         InstaMember instaMember = rq.getMember().getInstaMember();
 
         if (createRsData.isFail()) {
@@ -62,7 +55,7 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String cancel(@PathVariable("id") int id) {
         LikeablePerson likeablePerson = this.likeablePersonService.getLikeablePerson(id);
 
         RsData canUDeleteThis = likeablePersonService.canUDelete(rq.getMember(), likeablePerson);
@@ -76,6 +69,13 @@ public class LikeablePersonController {
         }
 
         return rq.redirectWithMsg("/likeablePerson/list", deleteThis);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class LikeForm {
+        private final String username;
+        private final int attractiveTypeCode;
     }
 
 }

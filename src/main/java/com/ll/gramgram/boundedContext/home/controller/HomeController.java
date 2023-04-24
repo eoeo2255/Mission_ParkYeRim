@@ -12,12 +12,12 @@ import java.util.Enumeration;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+    private final Rq rq;
+
     @GetMapping("/")
     public String showMain() {
         return "usr/home/main";
     }
-
-    private final Rq rq;
 
     @GetMapping("/debugSession")
     @ResponseBody

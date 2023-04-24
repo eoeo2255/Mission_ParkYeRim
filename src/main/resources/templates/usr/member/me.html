@@ -11,9 +11,13 @@
         <div class="max-w-2xl w-full px-4">
             <div class=""><i class="fa-solid fa-list"></i> 회원번호 : <span th:text="${@rq.member.id}"></span></div>
             <div><i class="fa-solid fa-circle-user"></i> 이름 : <span th:text="${@rq.member.username}"></span></div>
-            <div><i class="fa-solid fa-user-plus"></i> 가입날짜 : <span th:text="${#temporals.format(@rq.member.createDate, 'yyyy-MM-dd HH:mm')}"></span></div>
-            <div><i class="fa-solid fa-pen-to-square"></i> 수정날짜 : <span th:text="${#temporals.format(@rq.member.modifyDate, 'yyyy-MM-dd HH:mm')}"></span></div>
-            <div><i class="fa-solid fa-heart"></i> 나에게 호감을 표시한 사람 수 : <span th:if="${@rq.login and @rq.member.hasConnectedInstaMember()}" th:text="|${#lists.size(@rq.member.instaMember.whoLikesMe)}|"></span></div>
+            <div><i class="fa-solid fa-user-plus"></i> 가입날짜 : <span
+                    th:text="${#temporals.format(@rq.member.createDate, 'yyyy-MM-dd HH:mm')}"></span></div>
+            <div><i class="fa-solid fa-pen-to-square"></i> 수정날짜 : <span
+                    th:text="${#temporals.format(@rq.member.modifyDate, 'yyyy-MM-dd HH:mm')}"></span></div>
+            <div><i class="fa-solid fa-heart"></i> 나에게 호감을 표시한 사람 수 : <span
+                    th:if="${@rq.login and @rq.member.hasConnectedInstaMember()}"
+                    th:text="|${#lists.size(@rq.member.instaMember.whoLikesMe)}|"></span></div>
         </div>
     </div>
 </main>

@@ -6,7 +6,7 @@
 
 <body>
 
-<main layout:fragment="main">
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
     <script>
         function LoginForm__submit(form) {
             // username 이(가) 올바른지 체크
@@ -51,41 +51,43 @@
                 로그인
             </h1>
 
-            <form th:action method="POST" class="flex flex-col gap-6" onsubmit="LoginForm__submit(this); return false;">
+            <form class="flex flex-col gap-6" method="POST" onsubmit="LoginForm__submit(this); return false;" th:action>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">아이디</span>
                     </label>
-                    <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered" autofocus />
+                    <input autofocus class="input input-bordered" maxlength="30" name="username" placeholder="아이디"
+                           type="text"/>
                 </div>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">비빌번호</span>
                     </label>
-                    <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered" />
+                    <input class="input input-bordered" maxlength="30" name="password" placeholder="비밀번호"
+                           type="password"/>
                 </div>
                 <button class="btn btn-block btn-primary gap-1" type="submit" value="로그인">
                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                     <span>로그인</span>
                 </button>
 
-                <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline my-1 gap-1">
+                <a class="btn btn-block btn-outline my-1 gap-1" href="/oauth2/authorization/kakao">
                     <i class="fa-solid fa-comment text-[color:#ffe812]"></i>
                     <span>카카오 로그인</span>
                 </a>
-                <a href="/oauth2/authorization/naver" class="btn btn-block btn-outline my-1 gap-1">
+                <a class="btn btn-block btn-outline my-1 gap-1" href="/oauth2/authorization/naver">
                     <i class="fa-solid fa-n text-[color:#2DB400]"></i>
                     <span>네이버 로그인</span>
                 </a>
-                <a href="/oauth2/authorization/google" class="btn btn-block btn-outline my-1 gap-1">
+                <a class="btn btn-block btn-outline my-1 gap-1" href="/oauth2/authorization/google">
                     <i class="fa-brands fa-google text-[color:#ff4000]"></i>
                     <span>구글 로그인</span>
                 </a>
 
                 <div class="flex justify-center flex-wrap">
-                    <a href="#" class="btn btn-link">회원가입</a>
-                    <a href="#" class="btn btn-link">아이디찾기</a>
-                    <a href="#" class="btn btn-link">비밀번호찾기</a>
+                    <a class="btn btn-link" href="#">회원가입</a>
+                    <a class="btn btn-link" href="#">아이디찾기</a>
+                    <a class="btn btn-link" href="#">비밀번호찾기</a>
                 </div>
             </form>
         </div>

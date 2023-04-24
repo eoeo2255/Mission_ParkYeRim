@@ -40,18 +40,37 @@
                 form.password.focus();
                 return;
             }
+            form.passwordConfirm.value = form.passwordConfirm.value.trim();
+
+            if (form.password.value != form.passwordConfirm.value) {
+                toastWarning('입력하신 비밀번호가 일치하지 않습니다.');
+                form.passwordConfirm.focus();
+                return;
+            }
 
             form.submit(); // 폼 발송
         }
     </script>
     <div class="flex-grow flex items-center justify-center">
         <div class="max-w-2xl w-full px-4">
-            <form th:action method="POST" class="flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
+            <form class="flex flex-col gap-4" method="POST" onsubmit="JoinForm__submit(this); return false;" th:action>
                 <div class="form-control">
-                    <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered" autofocus >
+                    <label class="label">
+                        <span class="label-text"><i class="fa-solid fa-check"></i> 아이디</span>
+                    </label>
+                    <input autofocus class="input input-bordered" maxlength="30" name="username" placeholder="아이디" type="text">
                 </div>
                 <div class="form-control">
-                    <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
+                    <label class="label">
+                        <span class="label-text"><i class="fa-solid fa-check"></i> 비빌번호</span>
+                    </label>
+                    <input class="input input-bordered" maxlength="30" name="password" placeholder="비밀번호" type="password">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text"><i class="fa-solid fa-check"></i> 비빌번호 확인</span>
+                    </label>
+                    <input type="password" name="passwordConfirm" placeholder="비빌번호 확인" class="input input-bordered" maxlength="30"/>
                 </div>
                 <div>
                     <button class="btn btn-block btn-primary gap-1 my-2" type="submit" value="회원가입">

@@ -2,20 +2,19 @@ package com.ll.gramgram.boundedContext.member.entity;
 
 import com.ll.gramgram.base.BaseEntity;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -30,6 +29,10 @@ public class Member extends BaseEntity {
     @OneToOne // 1:1
     @Setter // memberService::updateInstaMember 함수 때문에
     private InstaMember instaMember;
+
+    public String getNickname() {
+        return "%04d".formatted(getId());
+    }
 
     // 이 함수 자체는 만들어야 한다. 스프링 시큐리티 규격
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
