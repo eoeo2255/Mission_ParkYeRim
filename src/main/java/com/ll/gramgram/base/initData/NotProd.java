@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @Profile({"dev", "test"})
@@ -18,32 +19,29 @@ public class NotProd {
             InstaMemberService instaMemberService,
             LikeablePersonService likeablePersonService
     ) {
-        return args -> {
-            Member memberAdmin = memberService.join("admin", "1234").getData();
-            Member memberUser1 = memberService.join("user1", "1234").getData();
-            Member memberUser2 = memberService.join("user2", "1234").getData();
-            Member memberUser3 = memberService.join("user3", "1234").getData();
-            Member memberUser4 = memberService.join("user4", "1234").getData();
+        return new CommandLineRunner() {
+            @Override
+            @Transactional
+            public void run(String... args) throws Exception {
+                Member memberAdmin = memberService.join("admin", "1234").getData();
+                Member memberUser1 = memberService.join("user1", "1234").getData();
+                Member memberUser2 = memberService.join("user2", "1234").getData();
+                Member memberUser3 = memberService.join("user3", "1234").getData();
+                Member memberUser4 = memberService.join("user4", "1234").getData();
+                Member memberUser5 = memberService.join("user5", "1234").getData();
 
-            Member memberUser5ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2735412562").getData();
-            Member memberUser6ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__116605859772254898218").getData();
-            Member memberUser5ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__bx8nBPoKhmc0Mo7zHM3RfQ-47rgD23xHGGAHYN3rX7I").getData();
+                Member memberUser6ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2735412562").getData();
+                Member memberUser7ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__116605859772254898218").getData();
+                Member memberUser7ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__bx8nBPoKhmc0Mo7zHM3RfQ-47rgD23xHGGAHYN3rX7I").getData();
 
-            instaMemberService.connect(memberUser2, "insta_user2", "M");
-            instaMemberService.connect(memberUser3, "insta_user3", "W");
-            instaMemberService.connect(memberUser4, "insta_user4", "M");
+                instaMemberService.connect(memberUser2, "insta_user2", "M");
+                instaMemberService.connect(memberUser3, "insta_user3", "W");
+                instaMemberService.connect(memberUser4, "insta_user4", "M");
+                instaMemberService.connect(memberUser5, "insta_user5", "W");
 
-            likeablePersonService.like(memberUser3, "insta_user101", 2);
-            likeablePersonService.like(memberUser3, "insta_user102", 1);
-            likeablePersonService.like(memberUser3, "insta_user103", 2);
-            likeablePersonService.like(memberUser3, "insta_user104", 3);
-            likeablePersonService.like(memberUser3, "insta_user105", 1);
-            likeablePersonService.like(memberUser3, "insta_user106", 2);
-            likeablePersonService.like(memberUser3, "insta_user107", 1);
-            likeablePersonService.like(memberUser3, "insta_user108", 3);
-            likeablePersonService.like(memberUser3, "insta_user109", 1);
-            likeablePersonService.like(memberUser3, "insta_user110", 1);
-
+                likeablePersonService.like(memberUser3, "insta_user4", 1);
+                likeablePersonService.like(memberUser3, "insta_user100", 2);
+            }
         };
     }
 }

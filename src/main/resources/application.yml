@@ -1,6 +1,6 @@
 spring:
   mvc:
-    hidden-method:
+    hiddenmethod:
       filter:
         enabled: true
   profiles:
@@ -15,36 +15,22 @@ spring:
     oauth2:
       client:
         registration:
-          google:
-            client-id:
-            client-secret:
+          naver:
             scope:
-              - email
-              - profile
+            client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
           kakao:
-            clientId:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: POST
-          naver:
-            client-id:
-            client-secret:
-            scope:
-              - name
-              - email
-            client-name: Naver
-            authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
-        provider:
           google:
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token_uri: https://oauth2.googleapis.com/token
-            user-name-attribute: sub
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            client-name: Google
+            scope: profile
+        provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
@@ -66,7 +52,7 @@ spring:
 logging:
   level:
     root: INFO
-    com.ll.gramgram_ai: DEBUG
+    com.ll.gramgram: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
 custom:
