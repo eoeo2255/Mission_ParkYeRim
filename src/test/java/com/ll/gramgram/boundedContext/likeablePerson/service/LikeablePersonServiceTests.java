@@ -27,6 +27,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class LikeablePersonServiceTests {
+
+    @Autowired
+    private LikeablePerson likeablePerson;
     @Autowired
     private MemberService memberService;
 
@@ -252,6 +255,10 @@ public class LikeablePersonServiceTests {
 
         // 수정 하면 쿨타임 갱신
         likeablePersonService.modifyAttractive(memberUser3, likeablePersonToBts, 1);
+
+        assertThat(
+                likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)
+        ).isTrue();
     }
 
 }

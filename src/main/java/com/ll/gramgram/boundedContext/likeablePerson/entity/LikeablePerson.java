@@ -69,7 +69,7 @@ public class LikeablePerson extends BaseEntity {
     }
 
     // 초 단위에서 올림 해주세요.
-    public String getModifyUnlockDateRemain() {
+    public String getModifyUnlockTimeRemain() {
         int hours = modifyUnlockTime.getHour();
         int minute = modifyUnlockTime.getMinute();
         return "%s시 %s분".formatted(hours,minute);
