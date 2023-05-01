@@ -1,7 +1,6 @@
 package com.ll.gramgram.boundedContext.instaMember.controller;
 
 
-
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.member.entity.Member;

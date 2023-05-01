@@ -1,6 +1,7 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
 
+import com.ll.gramgram.TestUt;
 import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
@@ -219,7 +220,7 @@ public class LikeablePersonServiceTests {
     @Test
     @DisplayName("호감표시에 대한 수정 쿨타임 가져오기")
     void t006() throws Exception {
-        assertThat(AppConfig.getLikeablePersonCoolTime()).isGreaterThan(0);
+        assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
     }
 
     @Test
@@ -232,8 +233,25 @@ public class LikeablePersonServiceTests {
         // 호감표시를 한 시점의 시간
 
         assertThat(
-                likeablePersonToBts.getUnlockCoolTime().isAfter(coolTime)  // rock이 풀린 시점의 시간이 쿨타임이 끝난 시간과 같은지 확인
+                likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)  // rock이 풀린 시점의 시간이 쿨타임이 끝난 시간과 같은지 확인
         ).isTrue();
+    }
+
+    @Test
+    @DisplayName("호감사유를 변경하면 쿨타임이 갱신된다.")
+    void t008() throws Exception {
+        // 현재시점에서 쿨타임이 다 차는 시간
+        LocalDateTime coolTime = AppConfig.genLikeablePersonUnlockCoolTime();
+
+        Member memberUser3 = memberService.findByUsername("user3").orElseThrow();
+
+        LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
+
+        // 강제로 쿨타임이 지난것으로 만든다.
+        TestUt.setFieldValue(likeablePersonToBts, "modifyUnlockDate", LocalDateTime.now().minusSeconds(-1));
+
+        // 수정 하면 쿨타임 갱신
+        likeablePersonService.modifyAttractive(memberUser3, likeablePersonToBts, 1);
     }
 
 }

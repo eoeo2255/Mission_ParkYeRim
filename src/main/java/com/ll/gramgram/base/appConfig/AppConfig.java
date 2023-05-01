@@ -10,22 +10,21 @@ import java.time.LocalDateTime;
 public class AppConfig {
     @Getter
     private static long likeablePersonFromMax;
+    @Getter
+    private static long likeablePersonModifyCoolTime;
+
+    public static LocalDateTime genLikeablePersonUnlockCoolTime() {
+        return LocalDateTime.now().plusSeconds(likeablePersonModifyCoolTime); //  현재 시간 + 쿨타임으로 정한 시간
+    }
 
     @Value("${custom.likeablePerson.from.max}")
     public void setLikeablePersonFromMax(long likeablePersonFromMax) {
         AppConfig.likeablePersonFromMax = likeablePersonFromMax;
     }
 
-    @Getter
-    private static long likeablePersonCoolTime;
-
     @Value("${custom.likeablePerson.coolTime}")
-    public void setLikeablePersonCoolTime(long likeablePersonCoolTime) {
-        AppConfig.likeablePersonCoolTime = likeablePersonCoolTime;
-    }
-
-    public static LocalDateTime genLikeablePersonUnlockCoolTime() {
-        return LocalDateTime.now().plusSeconds(likeablePersonCoolTime); //  현재 시간 + 쿨타임으로 정한 시간
+    public void setLikeablePersonModifyCoolTime(long likeablePersonModifyCoolTime) {
+        AppConfig.likeablePersonModifyCoolTime = likeablePersonModifyCoolTime;
     }
 
 }

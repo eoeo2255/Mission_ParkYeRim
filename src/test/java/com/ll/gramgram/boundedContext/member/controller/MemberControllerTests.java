@@ -1,8 +1,6 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
 
-import com.ll.gramgram.boundedContext.home.controller.HomeController;
-import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;

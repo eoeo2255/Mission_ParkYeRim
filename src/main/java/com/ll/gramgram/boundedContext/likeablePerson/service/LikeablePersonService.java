@@ -46,7 +46,7 @@ public class LikeablePersonService {
                 .toInstaMember(toInstaMember) // 호감을 받는 사람의 인스타 멤버
                 .toInstaMemberUsername(toInstaMember.getUsername()) // 중요하지 않음
                 .attractiveTypeCode(attractiveTypeCode) // 1=외모, 2=능력, 3=성격
-                .unlockCoolTime(AppConfig.genLikeablePersonUnlockCoolTime())  //  get은 그냥 가져오기, gen은 생성해서 가져오기
+                .modifyUnlockTime(AppConfig.genLikeablePersonUnlockCoolTime())  //  get은 그냥 가져오기, gen은 생성해서 가져오기
                 .build();
 
         likeablePersonRepository.save(likeablePerson); // 저장
@@ -145,7 +145,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> modifyAttractive(Member actor, Long id, int attractiveTypeCode) {
-        Optional<LikeablePerson> likeablePersonOptional  = findById(id);
+        Optional<LikeablePerson> likeablePersonOptional = findById(id);
 
         if (likeablePersonOptional.isEmpty()) {
             return RsData.of("F-1", "존재하지 않는 호감표시입니다.");
@@ -156,7 +156,7 @@ public class LikeablePersonService {
         return modifyAttractive(actor, likeablePerson, attractiveTypeCode);
     }
 
-    private RsData<LikeablePerson> modifyAttractive(Member actor, LikeablePerson likeablePerson, int attractiveTypeCode) {
+    public RsData<LikeablePerson> modifyAttractive(Member actor, LikeablePerson likeablePerson, int attractiveTypeCode) {
         RsData canModifyRsData = canModifyLike(actor, likeablePerson);
 
         if (canModifyRsData.isFail()) {
@@ -212,7 +212,6 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "호감표시수정이 가능합니다.");
     }
-
 
 
 }
