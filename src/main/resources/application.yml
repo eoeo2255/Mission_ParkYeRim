@@ -37,6 +37,10 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/google
             client-name: Google
             scope: profile
+          facebook:
+            redirect-uri: https://localhost/login/oauth2/code/facebook
+            client-name: Facebook
+            scope:
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -64,5 +68,6 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
 custom:
   likeablePerson:
+    modifyCoolTime: '#{60 * 60 * 3}'
     from:
       max: 10
