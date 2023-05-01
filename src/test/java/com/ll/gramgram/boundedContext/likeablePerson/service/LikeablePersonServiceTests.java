@@ -5,6 +5,8 @@ import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
+import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class LikeablePersonServiceTests {
+    @Autowired
+    private MemberService memberService;
+
     @Autowired
     private LikeablePersonService likeablePersonService;
     @Autowired
@@ -215,4 +221,19 @@ public class LikeablePersonServiceTests {
     void t006() throws Exception {
         assertThat(AppConfig.getLikeablePersonCoolTime()).isGreaterThan(0);
     }
+
+    @Test
+    @DisplayName("호감표시 후 지정된 unlockCoolTime 가져오기")
+    void t007() throws Exception {
+        LocalDateTime coolTime = AppConfig.genLikeablePersonUnlockCoolTime(); //  쿨타임이 지난 시점의 시간
+
+        Member memberUser3 = memberService.findByUsername("user3").orElseThrow();
+        LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
+        // 호감표시를 한 시점의 시간
+
+        assertThat(
+                likeablePersonToBts.getUnlockCoolTime().isAfter(coolTime)  // rock이 풀린 시점의 시간이 쿨타임이 끝난 시간과 같은지 확인
+        ).isTrue();
+    }
+
 }

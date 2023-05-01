@@ -1,6 +1,5 @@
 package com.ll.gramgram.boundedContext.instaMember.entity;
 
-
 import com.ll.gramgram.base.baseEntity.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
