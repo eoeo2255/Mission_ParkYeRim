@@ -37,7 +37,8 @@ public class NotProd {
 
                 Member memberUser6ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2735412562").getData();
                 Member memberUser7ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__116605859772254898218").getData();
-                Member memberUser7ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__bx8nBPoKhmc0Mo7zHM3RfQ-47rgD23xHGGAHYN3rX7I\n").getData();
+                Member memberUser8ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__bx8nBPoKhmc0Mo7zHM3RfQ-47rgD23xHGGAHYN3rX7I\n").getData();
+                Member memberUser9ByFacebook = memberService.whenSocialLogin("FACEBOOK", "FACEBOOK__993612818720541").getData();
 
                 instaMemberService.connect(memberUser2, "insta_user2", "M");
                 instaMemberService.connect(memberUser3, "insta_user3", "W");
@@ -46,9 +47,9 @@ public class NotProd {
 
                 // 테스트와 개발을 위해서 자동으로 만들어지는 호감이 삭제, 수정이 가능하도록 쿨타임해제
                 LikeablePerson likeablePersonToinstaUser4 = likeablePersonService.like(memberUser3, "insta_user4", 1).getData();
-                Ut.reflection.setFieldValue(likeablePersonToinstaUser4, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
+                Ut.reflection.setFieldValue(likeablePersonToinstaUser4, "modifyUnlockTime", LocalDateTime.now().minusSeconds(1));
                 LikeablePerson likeablePersonToinstaUser100 = likeablePersonService.like(memberUser3, "insta_user100", 2).getData();
-                Ut.reflection.setFieldValue(likeablePersonToinstaUser100, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
+                Ut.reflection.setFieldValue(likeablePersonToinstaUser100, "modifyUnlockTime", LocalDateTime.now().minusSeconds(1));
             }
         };
     }

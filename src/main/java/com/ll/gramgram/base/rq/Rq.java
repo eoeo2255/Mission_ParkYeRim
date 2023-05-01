@@ -109,9 +109,28 @@ public class Rq {
         // 기존 URL에 혹시 msg 파라미터가 있다면 그것을 지우고 새로 넣는다.
         return Ut.url.modifyQueryParam(url, "msg", msgWithTtl(msg));
     }
-
     // 메세지에 ttl 적용
     private String msgWithTtl(String msg) {
         return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
     }
+
+
+    public void setSessionAttr(String name, String value) {
+        session.setAttribute(name, value);
+    }
+
+    public <T> T getSessionAttr(String name, T defaultValue) {
+        try {
+            return (T) session.getAttribute(name);
+        } catch (Exception ignored) {
+        }
+
+        return defaultValue;
+    }
+
+    public void removeSessionAttr(String name) {
+        session.removeAttribute(name);
+    }
+
+
 }
