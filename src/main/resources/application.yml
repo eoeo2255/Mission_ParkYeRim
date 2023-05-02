@@ -1,10 +1,3 @@
-server:
-  port: 443
-  ssl:
-    enabled: true
-    key-store-type: PKCS12
-    key-store-password: 123456
-    key-store: keystore.p12
 spring:
   mvc:
     hiddenmethod:
@@ -26,15 +19,15 @@ spring:
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: https://localhost/login/oauth2/code/naver
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://localhost/login/oauth2/code/kakao
             client-authentication-method: POST
           google:
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: https://localhost/login/oauth2/code/google
             client-name: Google
             scope: profile
           facebook:

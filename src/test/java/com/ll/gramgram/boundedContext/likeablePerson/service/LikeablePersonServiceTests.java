@@ -27,12 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class LikeablePersonServiceTests {
-
-    @Autowired
-    private LikeablePerson likeablePerson;
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private LikeablePersonService likeablePersonService;
     @Autowired
@@ -142,7 +138,7 @@ public class LikeablePersonServiceTests {
 
         if (oldLikeablePerson != null) {
             System.out.println("v4 : 이미 나(인스타아이디 : insta_user3)는 insta_user4에게 호감을 표시 했구나.");
-            System.out.println("v4 : 기존 호감사유 : %s".formatted(oldLikeablePerson.getAttractiveTypeDisplayName()));
+            System.out.printf("v4 : 기존 호감사유 : %s%n", oldLikeablePerson.getAttractiveTypeDisplayName());
         }
     }
 
@@ -221,44 +217,48 @@ public class LikeablePersonServiceTests {
     }
 
     @Test
-    @DisplayName("호감표시에 대한 수정 쿨타임 가져오기")
+    @DisplayName("설정파일에서 호감표시에 대한 수정쿨타임 가져오기")
     void t006() throws Exception {
+        System.out.println("likeablePersonModifyCoolTime : " + AppConfig.getLikeablePersonModifyCoolTime());
         assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
     }
 
     @Test
-    @DisplayName("호감표시 후 지정된 unlockCoolTime 가져오기")
+    @DisplayName("호감표시를 하면 쿨타임이 지정된다.")
     void t007() throws Exception {
-        LocalDateTime coolTime = AppConfig.genLikeablePersonUnlockCoolTime(); //  쿨타임이 지난 시점의 시간
+        // 현재시점 기준에서 쿨타임이 다 차는 시간을 구한다.(미래)
+        LocalDateTime coolTime = AppConfig.genLikeablePersonUnlockCoolTime();
 
         Member memberUser3 = memberService.findByUsername("user3").orElseThrow();
+        // 호감표시를 생성한다.
+        // // 호감표시를 생성하면 쿨타임이 미래로 지정된다.
         LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
-        // 호감표시를 한 시점의 시간
 
+        // 잘 지정되었는지
         assertThat(
-                likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)  // rock이 풀린 시점의 시간이 쿨타임이 끝난 시간과 같은지 확인
+                likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)
         ).isTrue();
     }
 
     @Test
     @DisplayName("호감사유를 변경하면 쿨타임이 갱신된다.")
     void t008() throws Exception {
-        // 현재시점에서 쿨타임이 다 차는 시간
+        // 현재시점에서 쿨타임이 다 차는 시간을(미래)
         LocalDateTime coolTime = AppConfig.genLikeablePersonUnlockCoolTime();
 
         Member memberUser3 = memberService.findByUsername("user3").orElseThrow();
 
         LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
 
-        // 강제로 쿨타임이 지난것으로 만든다.
+        // 강제로 쿨타임이 지나게 만듦
         TestUt.setFieldValue(likeablePersonToBts, "modifyUnlockDate", LocalDateTime.now().minusSeconds(-1));
 
-        // 수정 하면 쿨타임 갱신
+        // 수정 하면 쿨타임이 갱신
         likeablePersonService.modifyAttractive(memberUser3, likeablePersonToBts, 1);
 
+        // 갱신 되었는지 확인
         assertThat(
                 likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)
         ).isTrue();
     }
-
 }

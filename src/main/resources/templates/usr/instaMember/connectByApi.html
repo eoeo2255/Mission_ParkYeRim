@@ -1,74 +1,82 @@
-<html layout:decorate="~{usr/layout/layout.html}">
-
-<head>
-    <title>인스타 아이디 입력</title>
-</head>
+<html layout:decorate="~{common/layout.html}">
 
 <body>
 
-<main layout:fragment="main" class="flex-grow flex items-center justify-center">
-    <script>
-        function ConnectForm__submit(form) {
-            // username 이(가) 올바른지 체크
-
-            const $checkedGenderRadioButton = $(form).find("[name=gender]:checked");
-
-            if ($checkedGenderRadioButton.length === 0) {
-                toastWarning('성별을 선택해주세요.');
-                $(form).find("[name=gender]:first").focus();
-                return;
-            }
-
-            form.submit(); // 폼 발송
-        }
-    </script>
-
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">
-            <i class="fa-brands fa-instagram"></i>
-            인스타 아이디 연결
-        </h1>
-
-        <form class="flex flex-col gap-6" method="POST" th:action onsubmit="ConnectForm__submit(this); return false;">
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">
-                        <i class="fa-solid fa-person-half-dress"></i>
-                        성별
-                    </span>
+<header layout:fragment="header" class="sticky top-0 z-50">
+    <div class="navbar max-w-2xl mx-auto bg-base-100">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                    <i class="fa-solid fa-bars"></i>
                 </label>
-
-                <!-- 라벨을 클릭하면 라벨의 하위요소인 버튼(체크,라디오,일반 등)이 클릭되는 효과) -->
-                <div class="flex justify-center gap-4">
-                    <label class="flex gap-2 items-center cursor-pointer">
-                        <input type="radio" name="gender" value="W" class="radio peer">
-                        <span class="text-gray-400 peer-checked:text-gray-900 peer-checked:font-bold peer-focus:text-gray-700">
-                            <i class="fa-solid fa-person-dress"></i>
-                            여성
-                        </span>
-                    </label>
-
-                    <label class="flex gap-2 items-center cursor-pointer">
-                        <input type="radio" name="gender" value="M" class="radio peer">
-                        <span class="text-gray-400 peer-checked:text-gray-900 peer-checked:font-bold peer-focus:text-gray-700">
-                            <i class="fa-solid fa-person"></i>
-                            남성
-                        </span>
-                    </label>
-                </div>
-
+                <ul tabindex="0"
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                    <li th:if="${@rq.logout}"><a href="/usr/member/login"><i
+                            class="fa-solid fa-arrow-right-to-bracket"></i> 시작하기</a>
+                    </li>
+                    <li th:if="${@rq.admin}"><a href="/adm/home/main"><i class="fa-solid fa-gauge"></i> 관리자 페이지</a>
+                    </li>
+                    <li th:if="${@rq.login}"><a href="/usr/member/pop"><i class="fa-solid fa-chart-line"></i> 내 인기</a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/likeablePerson/toList">
+                            <i class="fa-solid fa-list-ul"></i> 내가 받은 호감
+                        </a>
+                    </li>
+                    <li th:if="${@rq.login}"><a href="/usr/member/me"><i class="fa-solid fa-user"></i> 내 정보</a></li>
+                    <div th:if="${@rq.login}" class="divider"></div>
+                    <li th:if="${@rq.login}"><a href="/usr/likeablePerson/like"><i
+                            class="fa-solid fa-heart-circle-plus"></i> 호감표시</a></li>
+                    <li th:if="${@rq.login}"><a href="/usr/likeablePerson/list"><i class="fa-solid fa-list-ol"></i>
+                        호감목록</a>
+                    </li>
+                    <li th:if="${@rq.login}" th:unless="${@rq.member.hasConnectedInstaMember}">
+                        <a href="/usr/instaMember/connectByApi">
+                            <i class="fa-brands fa-instagram"></i>
+                            인스타 아이디 연결
+                        </a>
+                    </li>
+                    <div th:if="${@rq.login}" class="divider"></div>
+                    <li><a href="/usr/home/about"><i class="fa-solid fa-circle-info"></i> 그램그램이란?</a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="javascript:" onclick="$(this).next().submit();">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃
+                        </a>
+                        <form class="!hidden" hidden th:action="|/usr/member/logout|" method="POST"></form>
+                    </li>
+                </ul>
             </div>
-
-
-            <button id="btn-insta-member-connect-1"
-                    class="btn btn-block btn-outline gap-1">
-                <i class="fa-brands fa-instagram text-[color:#E1306C]"></i>
-                <span>인스타 아이디 연결</span>
-            </button>
-
-        </form>
+        </div>
+        <div class="navbar-center">
+            <a href="/" class="btn btn-ghost normal-case text-xl">
+                <span class="hidden min-[341px]:inline">
+                    gram
+                    <i class="fa-solid fa-heart text-red-300"></i>
+                    gram
+                </span>
+                <span class="min-[341px]:hidden">gg</span>
+                &nbsp;
+            </a>
+        </div>
+        <div class="navbar-end">
+            <a href="/usr/member/pop" class="btn btn-ghost gap-1" th:if="${@rq.login}">
+                <i class="fa-solid fa-chart-line"></i>
+            </a>
+            <a href="/usr/notification/list" class="btn btn-ghost btn-circle" th:if="${@rq.login}">
+                <div class="indicator">
+                    <i class="fa-regular fa-bell"></i>
+                    <span th:if="${@rq.login}" class="badge badge-xs badge-primary indicator-item"></span>
+                </div>
+            </a>
+            <a href="/usr/home/about" class="btn btn-ghost btn-circle" th:if="${@rq.logout}">
+                <div class="indicator">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+            </a>
+        </div>
     </div>
-</main>
-</body>
+</header>
 
+</body>
 </html>
