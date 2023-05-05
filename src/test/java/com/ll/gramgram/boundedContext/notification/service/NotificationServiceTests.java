@@ -42,7 +42,7 @@ public class NotificationServiceTests {
         List<Notification> notifications = notificationService.findByToInstaMember(memberUser5.getInstaMember());
 
         // 그중 최신 알림 가져오기
-        Notification lastNotification = notifications.get(notifications.size() - 1);
+        Notification lastNotification = notifications.get(0);
 
         assertThat(lastNotification.getFromInstaMember().getUsername()).isEqualTo("insta_user3");
         assertThat(lastNotification.getTypeCode()).isEqualTo("LIKE");
@@ -63,15 +63,11 @@ public class NotificationServiceTests {
         List<Notification> notifications = notificationService.findByToInstaMember(memberUser4.getInstaMember());
 
         // 그중에 최신 알림 가져오기
-        Notification lastNotification = notifications.get(notifications.size() - 1);
+        Notification lastNotification = notifications.get(0);
 
-        // 보낸이의 인스타 아이디가 insta_user3 인지 체크
         assertThat(lastNotification.getFromInstaMember().getUsername()).isEqualTo("insta_user3");
-        // 알림의 사유가 LIKE 인지 체크
         assertThat(lastNotification.getTypeCode()).isEqualTo("MODIFY_ATTRACTIVE_TYPE");
-        // 알림내용 중에서 기존 호감사유코드가 1 인지 체크
         assertThat(lastNotification.getOldAttractiveTypeCode()).isEqualTo(1);
-        // 알림내용 중에서 새 호감사유코드가 2 인지 체크
         assertThat(lastNotification.getNewAttractiveTypeCode()).isEqualTo(2);
     }
 }
