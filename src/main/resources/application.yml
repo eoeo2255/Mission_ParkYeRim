@@ -19,19 +19,19 @@ spring:
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: https://localhost/login/oauth2/code/naver
+            redirect-uri: https://${custom.site.baseUrl}/login/oauth2/code/naver
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: https://localhost/login/oauth2/code/kakao
+            redirect-uri: https://${custom.site.baseUrl}/login/oauth2/code/kakao
             client-authentication-method: POST
           google:
-            redirect-uri: https://localhost/login/oauth2/code/google
+            redirect-uri: https://${custom.site.baseUrl}/login/oauth2/code/google
             client-name: Google
             scope: profile
           facebook:
-            redirect-uri: https://localhost/login/oauth2/code/facebook
+            redirect-uri: https://${custom.site.baseUrl}/login/oauth2/code/facebook
             client-name: Facebook
             scope:
           instagram:
@@ -39,7 +39,7 @@ spring:
             scope: user_profile,user_media
             client-name: Instagram
             authorization-grant-type: authorization_code
-            redirect-uri: https://localhost/login/oauth2/code/instagram
+            redirect-uri: https://${custom.site.baseUrl}/login/oauth2/code/instagram
             client-authentication-method: client_secret_post
         provider:
           kakao:
@@ -76,3 +76,5 @@ custom:
     coolTime: '#{60 * 60 * 3}'
     from:
       max: 10
+  site:
+    baseUrl: http://localhost

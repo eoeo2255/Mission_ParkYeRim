@@ -251,7 +251,7 @@ public class LikeablePersonServiceTests {
         LikeablePerson likeablePersonToBts = likeablePersonService.like(memberUser3, "bts", 3).getData();
 
         // 강제로 쿨타임이 지나게 만듦
-        TestUt.setFieldValue(likeablePersonToBts, "modifyUnlockDate", LocalDateTime.now().minusSeconds(-1));
+        TestUt.setFieldValue(likeablePersonToBts, "modifyUnlockDate", LocalDateTime.now().minusSeconds(1));
 
         // 수정 하면 쿨타임이 갱신
         likeablePersonService.modifyAttractive(memberUser3, likeablePersonToBts, 1);

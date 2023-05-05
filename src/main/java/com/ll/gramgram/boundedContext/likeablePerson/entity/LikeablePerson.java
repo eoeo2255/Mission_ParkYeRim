@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -70,9 +71,7 @@ public class LikeablePerson extends BaseEntity {
 
     // 초 단위에서 올림 해주세요.
     public String getModifyUnlockTimeRemain() {
-        int hours = modifyUnlockTime.getHour();
-        int minute = modifyUnlockTime.getMinute();
-        return "%s시 %s분".formatted(hours,minute);
+        return Ut.time.diffFormat1Human(LocalDateTime.now(), modifyUnlockTime);
     }
 
 }

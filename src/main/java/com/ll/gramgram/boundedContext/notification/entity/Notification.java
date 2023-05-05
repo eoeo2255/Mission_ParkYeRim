@@ -32,4 +32,12 @@ public class Notification extends BaseEntity {
     private String newGender; // 해당사항 없으면 null
     private int newAttractiveTypeCode; // 해당사항 없으면 0
 
+    public boolean isRead() {
+        return readDate != null;
+    }
+
+    public void markAsRead() {
+        readDate = LocalDateTime.now();
+    }
+
 }
