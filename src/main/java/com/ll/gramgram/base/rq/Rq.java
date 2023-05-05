@@ -3,6 +3,7 @@ package com.ll.gramgram.base.rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
+import com.ll.gramgram.boundedContext.notification.service.NotificationService;
 import com.ll.gramgram.standard.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,8 +27,11 @@ public class Rq {
     private final User user;
     private Member member = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 
-    public Rq(MemberService memberService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    private final NotificationService notificationService;
+
+    public Rq(MemberService memberService, NotificationService notificationService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
+        this.notificationService = notificationService;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -56,6 +60,7 @@ public class Rq {
         String referer = savedRequest.getRedirectUrl();
         return referer != null && referer.contains("/adm");
     }
+
     // 로그인 되어 있는지 체크
     public boolean isLogin() {
         return user != null;
@@ -108,9 +113,37 @@ public class Rq {
         // 기존 URL에 혹시 msg 파라미터가 있다면 그것을 지우고 새로 넣는다.
         return Ut.url.modifyQueryParam(url, "msg", msgWithTtl(msg));
     }
-
     // 메세지에 ttl 적용
     private String msgWithTtl(String msg) {
         return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
     }
+
+
+    public void setSessionAttr(String name, String value) {
+        session.setAttribute(name, value);
+    }
+
+    public <T> T getSessionAttr(String name, T defaultValue) {
+        try {
+            return (T) session.getAttribute(name);
+        } catch (Exception ignored) {
+        }
+
+        return defaultValue;
+    }
+
+    public void removeSessionAttr(String name) {
+        session.removeAttribute(name);
+    }
+
+    public boolean hasUnreadNotifications() {
+        if (isLogout()) return false;
+
+        Member actor = getMember();
+
+        if (!actor.hasConnectedInstaMember()) return false;
+
+        return notificationService.countUnreadNotificationsByToInstaMember(getMember().getInstaMember());
+    }
+
 }

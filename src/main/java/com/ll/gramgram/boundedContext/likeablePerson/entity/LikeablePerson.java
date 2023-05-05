@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.entity;
 
+import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.base.baseEntity.BaseEntity;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
@@ -11,12 +12,16 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
+
 @Entity
 @Getter
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
 public class LikeablePerson extends BaseEntity {
+    private LocalDateTime modifyUnlockTime; //  호감수정이 가능해지는 시간
     @ManyToOne
     @ToString.Exclude
     private InstaMember fromInstaMember; // 호감을 표시한 사람(인스타 멤버)
@@ -35,6 +40,7 @@ public class LikeablePerson extends BaseEntity {
         }
 
         this.attractiveTypeCode = attractiveTypeCode;
+        this.modifyUnlockTime = AppConfig.genLikeablePersonUnlockCoolTime();
 
         return RsData.of("S-1", "성공");
     }
@@ -54,8 +60,18 @@ public class LikeablePerson extends BaseEntity {
             default -> "<i class=\"fa-solid fa-people-roof\"></i>";
         } + "&nbsp;" + getAttractiveTypeDisplayName();
     }
+
     public String getJdenticon() {
         return Ut.hash.sha256(fromInstaMember.getId() + "_likes_" + toInstaMember.getId());
+    }
+
+    public boolean isModifyUnlocked() {
+        return modifyUnlockTime.isBefore(LocalDateTime.now());
+    }
+
+    // 초 단위에서 올림 해주세요.
+    public String getModifyUnlockTimeRemain() {
+        return Ut.time.diffFormat1Human(LocalDateTime.now(), modifyUnlockTime);
     }
 
 }

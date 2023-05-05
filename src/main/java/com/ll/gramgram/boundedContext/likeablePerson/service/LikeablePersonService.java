@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,10 +42,11 @@ public class LikeablePersonService {
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
                 .fromInstaMember(fromInstaMember) // 호감을 표시하는 사람의 인스타 멤버
-                .fromInstaMemberUsername(actor.getInstaMember().getUsername()) // 중요하지 않음
+                .fromInstaMemberUsername(actor.getInstaMember().getUsername())
                 .toInstaMember(toInstaMember) // 호감을 받는 사람의 인스타 멤버
                 .toInstaMemberUsername(toInstaMember.getUsername()) // 중요하지 않음
                 .attractiveTypeCode(attractiveTypeCode) // 1=외모, 2=능력, 3=성격
+                .modifyUnlockTime(AppConfig.genLikeablePersonUnlockCoolTime())  //  get은 그냥 가져오기, gen은 생성해서 가져오기
                 .build();
 
         likeablePersonRepository.save(likeablePerson); // 저장
@@ -59,7 +59,7 @@ public class LikeablePersonService {
 
         publisher.publishEvent(new EventAfterLike(this, likeablePerson));
 
-        return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
+        return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록하였습니다.".formatted(username), likeablePerson);
     }
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
@@ -97,6 +97,9 @@ public class LikeablePersonService {
         if (actorInstaMemberId != fromInstaMemberId)
             return RsData.of("F-2", "권한이 없습니다.");
 
+        if (!likeablePerson.isModifyUnlocked()) {
+            return RsData.of("F-3", "취소는 %s분 후 부터 가능합니다.".formatted(likeablePerson.getModifyUnlockTime()));
+        }
 
         return RsData.of("S-1", "취소가능합니다.");
     }
@@ -133,7 +136,7 @@ public class LikeablePersonService {
         }
 
         if (fromLikeablePeople.size() >= likeablePersonFromMax) {
-            return RsData.of("F-4", "최대 %d명에 대해서만 호감표시가 가능합니다.".formatted(likeablePersonFromMax));
+            return RsData.of("F-4", "호감 표시는 최대 %d명 까지 가능합니다.".formatted(likeablePersonFromMax));
         }
 
         return RsData.of("S-1", "%s님에게 호감표시가 가능합니다.".formatted(username));
@@ -145,7 +148,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> modifyAttractive(Member actor, Long id, int attractiveTypeCode) {
-        Optional<LikeablePerson> likeablePersonOptional  = findById(id);
+        Optional<LikeablePerson> likeablePersonOptional = findById(id);
 
         if (likeablePersonOptional.isEmpty()) {
             return RsData.of("F-1", "존재하지 않는 호감표시입니다.");
@@ -155,8 +158,8 @@ public class LikeablePersonService {
 
         return modifyAttractive(actor, likeablePerson, attractiveTypeCode);
     }
-
-    private RsData<LikeablePerson> modifyAttractive(Member actor, LikeablePerson likeablePerson, int attractiveTypeCode) {
+    @Transactional
+    public RsData<LikeablePerson> modifyAttractive(Member actor, LikeablePerson likeablePerson, int attractiveTypeCode) {
         RsData canModifyRsData = canModifyLike(actor, likeablePerson);
 
         if (canModifyRsData.isFail()) {
@@ -172,8 +175,8 @@ public class LikeablePersonService {
 
         return RsData.of("S-3", "%s님에 대한 호감사유를 %s에서 %s(으)로 변경합니다.".formatted(username, oldAttractiveTypeDisplayName, newAttractiveTypeDisplayName), likeablePerson);
     }
-
-    private RsData<LikeablePerson> modifyAttractive(Member actor, String username, int attractiveTypeCode) {
+    @Transactional
+    public RsData<LikeablePerson> modifyAttractive(Member actor, String username, int attractiveTypeCode) {
         // 액터가 생성한 `좋아요` 들 가져오기
         List<LikeablePerson> fromLikeablePeople = actor.getInstaMember().getFromLikeablePeople();
 
@@ -210,8 +213,12 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감표시를 수정할 권한이 없습니다.");
         }
 
+        if (!likeablePerson.isModifyUnlocked()) {
+            return RsData.of("F-3", "삭제는 %s분 후 부터 가능합니다.".formatted(likeablePerson.getModifyUnlockTime()));
+        }
 
         return RsData.of("S-1", "호감표시수정이 가능합니다.");
     }
+
 
 }

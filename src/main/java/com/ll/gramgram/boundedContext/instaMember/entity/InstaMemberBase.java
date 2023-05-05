@@ -1,10 +1,10 @@
 package com.ll.gramgram.boundedContext.instaMember.entity;
 
-
 import com.ll.gramgram.base.baseEntity.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 public abstract class InstaMemberBase extends BaseEntity {
+    @Setter
     String gender;
 
     long likesCountByGenderWomanAndAttractiveTypeCode1;
