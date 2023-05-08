@@ -8,30 +8,38 @@ import com.ll.gramgram.standard.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.servlet.LocaleResolver;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 @Component
 @RequestScope
 public class Rq {
     private final MemberService memberService;
+    private final NotificationService notificationService;
+    private final MessageSource messageSource;
+    private final LocaleResolver localeResolver;
+    private Locale locale;
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
     private final User user;
     private Member member = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 
-    private final NotificationService notificationService;
-
-    public Rq(MemberService memberService, NotificationService notificationService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(MemberService memberService, NotificationService notificationService, MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
         this.notificationService = notificationService;
+        this.messageSource = messageSource;
+        this.localeResolver = localeResolver;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -113,11 +121,11 @@ public class Rq {
         // 기존 URL에 혹시 msg 파라미터가 있다면 그것을 지우고 새로 넣는다.
         return Ut.url.modifyQueryParam(url, "msg", msgWithTtl(msg));
     }
+
     // 메세지에 ttl 적용
     private String msgWithTtl(String msg) {
         return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
     }
-
 
     public void setSessionAttr(String name, String value) {
         session.setAttribute(name, value);
@@ -146,4 +154,19 @@ public class Rq {
         return notificationService.countUnreadNotificationsByToInstaMember(getMember().getInstaMember());
     }
 
+    public String getCText(String code, String... args) {
+        return messageSource.getMessage(code, args, getLocale());
+    }
+
+    private Locale getLocale() {
+        if (locale == null) locale = localeResolver.resolveLocale(req);
+
+        return locale;
+    }
+
+    public String getParamsJsonStr() {
+        Map<String, String[]> parameterMap = req.getParameterMap();
+
+        return Ut.json.toStr(parameterMap);
+    }
 }
