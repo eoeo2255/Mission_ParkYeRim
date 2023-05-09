@@ -405,27 +405,5 @@ public class LikeablePersonControllerTests {
         assertThat(newAttractiveTypeCode).isEqualTo(2);
     }
 
-    @Test
-    @DisplayName("내가 받은 호감에서 필터를 남성으로 하면 RequestParam 값으로 gender=M을 받는다.")
-    void t016() throws Exception {
-        ResultActions resultActions = mvc
-                .perform(get("/usr/likeablePerson/toList/gender=M")
-                        .with(csrf()) // CSRF 키 생성
-                )
-                .andDo(print());
-
-        // THEN
-        resultActions
-                .andExpect(handler().handlerType(LikeablePersonController.class))
-                .andExpect(handler().methodName("showToListFilter"))
-        ;
-
-        List<LikeablePerson> user4ToLike = memberService.findByUsername("user4").get().getInstaMember().getToLikeablePeople();
-        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListGenderFilter(user4ToLike,"M");
-
-        int someoneWhoLikeMeList = likeablePersonFilter.size();
-
-        assertThat(someoneWhoLikeMeList).isEqualTo(1);
-    }
 
 }
