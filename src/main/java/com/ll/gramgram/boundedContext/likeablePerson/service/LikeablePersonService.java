@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -175,6 +176,7 @@ public class LikeablePersonService {
 
         return RsData.of("S-3", "%s님에 대한 호감사유를 %s에서 %s(으)로 변경합니다.".formatted(username, oldAttractiveTypeDisplayName, newAttractiveTypeDisplayName), likeablePerson);
     }
+
     @Transactional
     public RsData<LikeablePerson> modifyAttractive(Member actor, String username, int attractiveTypeCode) {
         // 액터가 생성한 `좋아요` 들 가져오기
@@ -220,5 +222,18 @@ public class LikeablePersonService {
         return RsData.of("S-1", "호감표시수정이 가능합니다.");
     }
 
+    public List<LikeablePerson> toListGenderFilter(List<LikeablePerson> likeablePeople, String gender) {
+        List<LikeablePerson> filteringList = new ArrayList<>();
+
+        for (LikeablePerson likeablePerson : likeablePeople) {
+            String genderCK = likeablePerson.getFromInstaMember().getGender();
+
+            if (Objects.equals(genderCK, gender)) {
+                filteringList.add(likeablePerson);
+            }
+        }
+
+        return filteringList;
+    }
 
 }
