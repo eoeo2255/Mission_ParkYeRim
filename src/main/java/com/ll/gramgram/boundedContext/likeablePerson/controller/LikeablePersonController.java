@@ -15,8 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/usr/likeablePerson")
@@ -105,23 +105,25 @@ public class LikeablePersonController {
     public String showToList(Model model, String gender, @RequestParam(defaultValue = "0") int attractiveTypeCode, @RequestParam(defaultValue = "1") int sortCode) {
         InstaMember instaMember = rq.getMember().getInstaMember();
 
-        // 인스타인증 했는지 체크
-        // 해당 instaMember 를 좋아하는 사람들 목록
         if (instaMember != null) {
             List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
 
             if (gender != null) {
-                likeablePeople= likeablePersonService.toListGenderFilter(likeablePeople, gender);
+                likeablePeople = likeablePersonService.toListGenderFilter(likeablePeople, gender);
             }
 
-//            if (attractiveTypeCode != null) {
-//                likeablePersonService.toListGenderFilter(likeablePeople, gender);
-//            }
-//
-//            switch (sortCode) {
-//                case 1 ->
-//            }
+            if (attractiveTypeCode != 0) {
+                likeablePeople = likeablePersonService.toListATcodeFilter(likeablePeople, attractiveTypeCode);
+            }
 
+//            switch (sortCode) {
+////                case 1 -> model.addAttribute("likeablePeople", likeablePeople);
+////                case 2 -> model.addAttribute("likeablePeople", likeablePeople);
+////                case 3 -> model.addAttribute("likeablePeople", likeablePeople);
+////                case 4 -> model.addAttribute("likeablePeople", likeablePeople);
+////                case 5 -> model.addAttribute("likeablePeople", likeablePeople);
+////                case 6 -> model.addAttribute("likeablePeople", likeablePeople);
+//            }
             model.addAttribute("likeablePeople", likeablePeople);
         }
 

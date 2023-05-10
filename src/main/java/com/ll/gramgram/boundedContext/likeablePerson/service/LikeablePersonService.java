@@ -29,6 +29,7 @@ public class LikeablePersonService {
     private final ApplicationEventPublisher publisher;
 
 
+
     @Transactional
     public RsData<LikeablePerson> like(Member actor, String username, int attractiveTypeCode) {
         RsData canLikeRsData = canLike(actor, username, attractiveTypeCode);
@@ -229,6 +230,20 @@ public class LikeablePersonService {
             String genderCK = likeablePerson.getFromInstaMember().getGender();
 
             if (Objects.equals(genderCK, gender)) {
+                filteringList.add(likeablePerson);
+            }
+        }
+
+        return filteringList;
+    }
+
+    public List<LikeablePerson> toListATcodeFilter(List<LikeablePerson> likeablePeople, int attractiveTypeCode) {
+        List<LikeablePerson> filteringList = new ArrayList<>();
+
+        for (LikeablePerson likeablePerson : likeablePeople) {
+            int ATcode = likeablePerson.getAttractiveTypeCode();
+
+            if (ATcode == attractiveTypeCode) {
                 filteringList.add(likeablePerson);
             }
         }

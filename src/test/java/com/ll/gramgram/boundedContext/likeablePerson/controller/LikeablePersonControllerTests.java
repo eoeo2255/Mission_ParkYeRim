@@ -406,4 +406,24 @@ public class LikeablePersonControllerTests {
     }
 
 
+    @Test
+    @DisplayName("쿼리스트링으로 gender=null, attractiveTypeCode=1 을 받아오면 호감 리스트의 개수는 1개가 된다.")
+    @WithUserDetails("user4")
+    void t016() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/usr/likeablePerson/toList")
+                        .with(csrf())
+                        .param("gender", "")
+                        .param("attractiveTypeCode", "1")
+                )
+                .andDo(print());
+
+        List<LikeablePerson> user4ToLike = memberService.findByUsername("user4").get().getInstaMember().getToLikeablePeople();
+        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListATcodeFilter(user4ToLike,2);
+
+        int someoneWhoLikeMeList = likeablePersonFilter.size();
+
+        assertThat(someoneWhoLikeMeList).isEqualTo(1);
+    }
+
 }
