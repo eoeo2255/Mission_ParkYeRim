@@ -116,14 +116,14 @@ public class LikeablePersonController {
                 likeablePeople = likeablePersonService.toListATcodeFilter(likeablePeople, attractiveTypeCode);
             }
 
-//            switch (sortCode) {
-////                case 1 -> model.addAttribute("likeablePeople", likeablePeople);
-////                case 2 -> model.addAttribute("likeablePeople", likeablePeople);
-////                case 3 -> model.addAttribute("likeablePeople", likeablePeople);
-////                case 4 -> model.addAttribute("likeablePeople", likeablePeople);
-////                case 5 -> model.addAttribute("likeablePeople", likeablePeople);
-////                case 6 -> model.addAttribute("likeablePeople", likeablePeople);
-//            }
+            switch (sortCode) {
+                case 1 -> likeablePeople = likeablePersonService.toLikeNewestFilter(likeablePeople);
+//                case 2 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 3 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 4 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 5 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 6 -> model.addAttribute("likeablePeople", likeablePeople);
+            }
             model.addAttribute("likeablePeople", likeablePeople);
         }
 
