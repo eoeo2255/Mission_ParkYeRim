@@ -256,4 +256,12 @@ public class LikeablePersonService {
         return likeablePeople;
     }
 
+    public List<LikeablePerson> toLikeOldFilter(List<LikeablePerson> likeablePeople) {
+        likeablePeople.sort(Comparator.comparing(LikeablePerson::getCreateDate));
+
+        likeablePeople.forEach(LikeablePerson::toString);
+
+        return likeablePeople;
+    }
+
 }

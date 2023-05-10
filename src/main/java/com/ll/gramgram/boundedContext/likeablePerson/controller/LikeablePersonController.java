@@ -118,7 +118,7 @@ public class LikeablePersonController {
 
             switch (sortCode) {
                 case 1 -> likeablePeople = likeablePersonService.toLikeNewestFilter(likeablePeople);
-//                case 2 -> model.addAttribute("likeablePeople", likeablePeople);
+                case 2 -> likeablePeople = likeablePersonService.toLikeOldFilter(likeablePeople);
 //                case 3 -> model.addAttribute("likeablePeople", likeablePeople);
 //                case 4 -> model.addAttribute("likeablePeople", likeablePeople);
 //                case 5 -> model.addAttribute("likeablePeople", likeablePeople);
