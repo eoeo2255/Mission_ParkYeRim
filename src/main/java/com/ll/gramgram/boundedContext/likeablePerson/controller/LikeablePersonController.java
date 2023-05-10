@@ -108,7 +108,7 @@ public class LikeablePersonController {
         if (instaMember != null) {
             List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
 
-            if (gender != null) {
+            if (gender != null && gender.length() > 0) {
                 likeablePeople = likeablePersonService.toListGenderFilter(likeablePeople, gender);
             }
 

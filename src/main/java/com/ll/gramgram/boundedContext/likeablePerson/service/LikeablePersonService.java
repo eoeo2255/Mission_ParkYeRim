@@ -249,7 +249,7 @@ public class LikeablePersonService {
     }
 
     public List<LikeablePerson> toLikeNewestFilter(List<LikeablePerson> likeablePeople) {
-        likeablePeople.sort(Comparator.comparing(LikeablePerson::getCreateDate));
+        likeablePeople.sort(Comparator.comparing(LikeablePerson::getCreateDate).reversed());
 
         likeablePeople.forEach(LikeablePerson::toString);
 

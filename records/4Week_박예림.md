@@ -5,6 +5,7 @@
 - [x] 받은 호감 리스트에서 성별 필터링 구현
   - [x] 특정 성별을 가진 사람에게서 받은 호감만 필터링해서 표시
 - [x] 네이버 클라우드 플랫폼 배포, 도메인, HTTPS 까지 적용
+#### 선택미션
 - [ ] 받은 호감 리스트에서 호감사유 필터링 구현
   - [ ] 2순위 정렬조건은 최신순
 - [ ] 받은 호감리스트에서 정렬 기능 구현
@@ -19,8 +20,6 @@
 
 ## 접근 방법
 
-**[Issue]**
-
 - 받은 호감 리스트에서 성별 필터링 구현하기
     - showToList 메서드를 통해 gender 쿼리스트링이 null이 아닌지 확인한다. null이 아닐 경우, 필터링을 했다는 뜻이기 때문에 service의 toListGenderFilter 메서드를 실행시킨다
     - 해당 instaMember 를 좋아하는 사람들의 목록 중 넘어온 gender 쿼리스트링과 일치하는 instaMember만  새 List에 넣은 뒤, 해당 List를 반환한다.
@@ -32,5 +31,10 @@
 ---
 
 ## 특이사항
-
-- 
+**[Issue]**
+- showToList 메서드를 구현할 때, 해당 부분에서 막혔었다. 변수 likeablePeople에 재할당 하는 것을 잊고 메서드를 호출만 해놓고 왜 안되지? 고민하고 있었다.. 이런 실수는 하지 말자...!
+```java
+if (gender != null) {
+  likeablePersonService.toListGenderFilter(likeablePeople, gender);
+  }
+```
