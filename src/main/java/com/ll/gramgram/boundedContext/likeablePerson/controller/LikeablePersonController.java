@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/usr/likeablePerson")
@@ -101,18 +102,34 @@ public class LikeablePersonController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/toList")
-    public String showToList(Model model) {
+    public String showToList(Model model, String gender, @RequestParam(defaultValue = "0") int attractiveTypeCode, @RequestParam(defaultValue = "1") int sortCode) {
         InstaMember instaMember = rq.getMember().getInstaMember();
 
-        // 인스타인증을 했는지 체크
         if (instaMember != null) {
-            // 해당 인스타회원이 좋아하는 사람들 목록
             List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
+
+            if (gender != null && gender.length() > 0) {
+                likeablePeople = likeablePersonService.toListGenderFilter(likeablePeople, gender);
+            }
+
+            if (attractiveTypeCode != 0) {
+                likeablePeople = likeablePersonService.toListATcodeFilter(likeablePeople, attractiveTypeCode);
+            }
+
+            switch (sortCode) {
+                case 1 -> likeablePeople = likeablePersonService.toLikeNewestFilter(likeablePeople);
+                case 2 -> likeablePeople = likeablePersonService.toLikeOldFilter(likeablePeople);
+//                case 3 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 4 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 5 -> model.addAttribute("likeablePeople", likeablePeople);
+//                case 6 -> model.addAttribute("likeablePeople", likeablePeople);
+            }
             model.addAttribute("likeablePeople", likeablePeople);
         }
 
         return "usr/likeablePerson/toList";
     }
+
 
     @AllArgsConstructor
     @Getter
@@ -134,4 +151,5 @@ public class LikeablePersonController {
         @Max(3)
         private final int attractiveTypeCode;
     }
+
 }
