@@ -48,7 +48,7 @@ public class NotificationControllerTests {
                 .filter(notification -> !notification.isRead())
                 .count();
 
-        assertThat(unreadCount).isEqualTo(2);
+        assertThat(unreadCount).isEqualTo(3);
 
         // WHEN
         ResultActions resultActions = mvc

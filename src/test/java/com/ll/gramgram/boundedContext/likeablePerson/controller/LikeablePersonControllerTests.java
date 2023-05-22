@@ -419,7 +419,7 @@ public class LikeablePersonControllerTests {
                 .andDo(print());
 
         List<LikeablePerson> user4ToLike = memberService.findByUsername("user4").get().getInstaMember().getToLikeablePeople();
-        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListATcodeFilter(user4ToLike,2);
+        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListATcodeFilter(user4ToLike,1);
 
         int someoneWhoLikeMeList = likeablePersonFilter.size();
 
