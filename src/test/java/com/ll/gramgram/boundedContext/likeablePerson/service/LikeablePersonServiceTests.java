@@ -261,4 +261,28 @@ public class LikeablePersonServiceTests {
                 likeablePersonToBts.getModifyUnlockTime().isAfter(coolTime)
         ).isTrue();
     }
+
+    @Test
+    @DisplayName("내가 받은 호감에서 성별을 남성으로 변경하면 호감 리스트의 개수는 1개가 된다.")
+    void t009() throws Exception {
+
+        List<LikeablePerson> user4ToLike = memberService.findByUsername("user4").get().getInstaMember().getToLikeablePeople();
+        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListGenderFilter(user4ToLike,"M");
+
+        int someoneWhoLikeMeList = likeablePersonFilter.size();
+
+        assertThat(someoneWhoLikeMeList).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("내가 받은 호감에서 호감사유를 외모로 변경하면 호감 리스트의 개수는 1개가 된다.")
+    void t010() throws Exception {
+
+        List<LikeablePerson> user4ToLike = memberService.findByUsername("user4").get().getInstaMember().getToLikeablePeople();
+        List<LikeablePerson> likeablePersonFilter = likeablePersonService.toListATcodeFilter(user4ToLike,1);
+
+        int someoneWhoLikeMeList = likeablePersonFilter.size();
+
+        assertThat(someoneWhoLikeMeList).isEqualTo(1);
+    }
 }

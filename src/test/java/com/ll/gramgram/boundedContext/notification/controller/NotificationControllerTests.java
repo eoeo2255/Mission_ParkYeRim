@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.notification.controller;
 
+
 import com.ll.gramgram.boundedContext.notification.entity.Notification;
 import com.ll.gramgram.boundedContext.notification.service.NotificationService;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 
 @SpringBootTest // 스프링부트 관련 컴포넌트 테스트할 때 붙여야 함, Ioc 컨테이너 작동시킴
 @AutoConfigureMockMvc // http 요청, 응답 테스트
@@ -37,7 +38,7 @@ public class NotificationControllerTests {
     private NotificationService notificationService;
 
     @Test
-    @DisplayName("알림목록에 접속하면 아직 읽음처리되지 않은 알림을 읽음처리 한다.")
+    @DisplayName("알림목록에 접속했을 때 아직 읽음처리되지 않은 것들을 읽음처리 한다.")
     @WithUserDetails("user4")
     void t001() throws Exception {
         List<Notification> notifications = notificationService.findByToInstaMember_username("insta_user4");
@@ -47,9 +48,9 @@ public class NotificationControllerTests {
                 .filter(notification -> !notification.isRead())
                 .count();
 
-        assertThat(unreadCount).isEqualTo(1);       //  아직 안 읽은 알림이 1개 있음
+        assertThat(unreadCount).isEqualTo(2);
 
-        // 알림목록에 접속
+        // WHEN
         ResultActions resultActions = mvc
                 .perform(get("/usr/notification/list"))
                 .andDo(print());
@@ -59,11 +60,11 @@ public class NotificationControllerTests {
                 .filter(notification -> !notification.isRead())
                 .count();
 
-        assertThat(unreadCount).isEqualTo(0);       //  읽지 않은 알림 없음
+        assertThat(unreadCount).isEqualTo(0);
     }
 
     @Test
-    @DisplayName("아직 읽지 않은 알림이 있으면 상단바에 인디케이터 표시")
+    @DisplayName("읽지 않은 알림이 있을 때 상단바에 인디케이터 표시")
     @WithUserDetails("user4")
     void t002() throws Exception {
         // WHEN
@@ -80,7 +81,7 @@ public class NotificationControllerTests {
     }
 
     @Test
-    @DisplayName("알림리스트에 접속하면 상단바에 인디케이터가 사라짐")
+    @DisplayName("읽지 않은 알림이 있을 때, 알림리스트에 접속하면 상단바에 인디케이터 표시가 사라짐")
     @WithUserDetails("user4")
     void t003() throws Exception {
         // WHEN
@@ -95,5 +96,4 @@ public class NotificationControllerTests {
                         data-test="hasUnreadNotifications"
                         """.stripIndent().trim()))));
     }
-
 }
